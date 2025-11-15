@@ -27,7 +27,7 @@ If you would like the Avalara connector but your system does not meet these mini
 - [SECTION 3: Ship-To Address (Document Header-Level Information)](#section-3-ship-to-address-document-header-level-information)
 - [SECTION 4: Avalara Tax Codes (Line Item and Miscellaneous Charge Classification)](#section-4-avalara-tax-codes-line-item-and-miscellaneous-charge-classification)
 - [SECTION 5: Avalara Entity Use Codes (Customer Classification)](#section-5-avalara-entity-use-codes-customer-classification)
-- [SECTION 6: Avalara Configuration](#section-6-avalara-configuration)
+- [SECTION 6: Avalara Connector Configuration](#section-6-avalara-connector-configuration)
   - [Confirm Avalara Tax Authority and Tax Code](#confirm-that-the-avalara-tax-authority-and-avalara-tax-code-are-properly-defined-in-counterpoint)
   - [Configure Custom Store Settings](#configure-custom-store-settings-for-the-avalara-connector)
   - [Enable Avalara Tax Calculation for a Store](#enable-avalara-tax-calculation-for-a-store)
@@ -203,7 +203,7 @@ https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Exem
 
 ---
 
-## SECTION 6: Avalara Configuration
+## SECTION 6: Avalara Connector Configuration
 
 Accurate sales tax calculation requires that both the Avalara Tax Authority and Avalara Tax Code are properly defined in Counterpoint, and that the Avalara configuration is completed correctly within Store Setup. The steps below ensure that tax calculation is performed by the Avalara Connector rather than by Counterpoint’s standard tax functionality.
 

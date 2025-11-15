@@ -105,31 +105,29 @@ If no tax code is assigned to an item, Avalara classifies the item as **tangible
 #### Avalara Tax Code Examples
 
 **Item Tax Code Example 1**
-
-  - **Avalara Tax Code:** `PC040110` – Clothing and Related Products (Business-to-Customer) – Boots  
-  - **Location:** Rhode Island  
-  - **Item Price:** $125  
-
-  **Outcome in Rhode Island:**  
-  - The item is **tax exempt** at this price point.  
-  - If the price exceeds **$250**, the item becomes **taxable** under Rhode Island rules.
-
-  **Outcome in South Carolina:**  
-  - The item is **generally taxable** for most of the year.  
-  - It becomes **tax exempt** during the **back-to-school tax holiday** held the first weekend of August, which includes clothing, footwear, and selected school supplies.
+> - **Avalara Tax Code:** `PC040110` – Clothing and Related Products (Business-to-Customer) – Boots  
+> - **Location:** Rhode Island  
+> - **Item Price:** $125  
+> 
+> **Outcome in Rhode Island:**  
+> - The item is **tax exempt** at this price point.  
+> - If the price exceeds **$250**, the item becomes **taxable** under Rhode Island rules.
+> 
+> **Outcome in South Carolina:**  
+> - The item is **generally taxable** for most of the year.  
+> - It becomes **tax exempt** during the **back-to-school tax holiday** held the first weekend of August, which includes clothing, footwear, and selected school supplies.
 
 **Item Tax Code Example 2**
+> - **Avalara Tax Code:** `PF050000` – Food and Food Ingredients (Non-Prepared Foods) – Sold by Qualified Food Retailer  
+> - **Location:** Pennsylvania  
+> 
+> **Outcome in Pennsylvania:**  
+> - The item is **generally not taxed** under Pennsylvania’s rules for non-prepared food items.
+> 
+> **Outcome in Missouri:**  
+> - The item is **taxable**, but typically at a **reduced tax rate** compared to standard general merchandise.  
 
-  - **Avalara Tax Code:** `PF050000` – Food and Food Ingredients (Non-Prepared Foods) – Sold by Qualified Food Retailer  
-  - **Location:** Pennsylvania  
-
-  **Outcome in Pennsylvania:**  
-  - The item is **generally not taxed** under Pennsylvania’s rules for non-prepared food items.
-
-  **Outcome in Missouri:**  
-  - The item is **taxable**, but typically at a **reduced tax rate** compared to standard general merchandise.
-
-#### Help Selecting Avalara Tax Codes
+#### Help Selecting Avalara Tax Codes  
 
 Selecting the correct Avalara Tax Code is essential because it works alongside the destination address and the customer's Entity Use Code to determine the final tax result. These three inputs form the foundation of Avalara’s calculation logic, and accurate tax codes result in a reliable and compliant tax calculation.  
 

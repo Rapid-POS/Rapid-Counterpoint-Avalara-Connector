@@ -370,5 +370,9 @@ This functionality enables Avalara to:
 
 This support is especially important when using marketplaces such as eBay and GunBroker, where the marketplace — not the seller — is responsible for tax calculation and remittance.
 
+## Conclusion  
 
+The Rapid Avalara Connector
+
+For assistance with configuration changes, mapping, or troubleshooting, contact Rapid Support. 
 

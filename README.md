@@ -98,13 +98,9 @@ Avalara does not rely on simple taxable or exempt flags for items. Instead, Aval
 
 If no tax code is assigned to an item, Avalara classifies the item as **tangible personal property (TPP)** and applies the default Avalara code **`P0000000`**, which designates standard taxable goods.
 
-**Result:**  
-The standard sales tax rate for the destination location is applied. This typically means the item is taxed according to the jurisdiction’s default rules for general merchandise, unless a customer-specific exemption or special tax condition applies.
-
-For **miscellaneous charges** without an assigned tax code, no tax information is transmitted to Avalara. Therefore, it is essential to assign tax codes for miscellaneous charges in each store so they are included as document lines when the transaction is sent to Avalara.
-
-For detailed guidance on selecting the appropriate Avalara Tax Codes, refer to:  
-https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Avalara_tax_codes.html
+**Outcome for Using the Default**  
+- The standard sales tax rate for the destination location is applied. This typically means the item is taxed according to the jurisdiction’s default rules for general merchandise, unless a customer-specific exemption or special tax condition applies.
+- For **miscellaneous charges** without an assigned tax code, no tax information is transmitted to Avalara. Therefore, it is essential to assign tax codes for miscellaneous charges in each store so they are included as document lines when the transaction is sent to Avalara.
 
 #### Avalara Tax Code Examples
 
@@ -122,7 +118,6 @@ https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Aval
   - The item is **generally taxable** for most of the year.  
   - It becomes **tax exempt** during the **back-to-school tax holiday** held the first weekend of August, which includes clothing, footwear, and selected school supplies.
 
-
 **Item Tax Code Example 2**
 
   - **Avalara Tax Code:** `PF050000` – Food and Food Ingredients (Non-Prepared Foods) – Sold by Qualified Food Retailer  
@@ -134,8 +129,13 @@ https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Aval
   **Outcome in Missouri:**  
   - The item is **taxable**, but typically at a **reduced tax rate** compared to standard general merchandise.
 
+#### Help Selecting Avalara Tax Codes
+
 Selecting the correct Avalara Tax Code is essential because it works alongside the destination address and the customer's Entity Use Code to determine the final tax result. These three inputs form the foundation of Avalara’s calculation logic, and accurate tax codes result in a reliable and compliant tax calculation.  
-  
+
+For detailed guidance on selecting the appropriate Avalara Tax Codes, refer to:  
+https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Avalara_tax_codes.html
+
 ### 3. Avalara Entity Use Code (Customer-specific Information)  
   
 Avalara does not rely solely on a basic tax-exempt or non-exempt flag for customers. Instead, Avalara evaluates the customer’s tax-exempt reason and the tax rules that apply at the destination location, along with the item’s Avalara Tax Code when relevant. This approach enables Avalara to determine customer-specific exemptions based on both the jurisdiction and the type of products being purchased.
@@ -143,9 +143,6 @@ Avalara does not rely solely on a basic tax-exempt or non-exempt flag for custom
 Each customer record in Counterpoint can be assigned its own **Avalara Entity Use Code**. Assigned within **Customers > Customers**, this code is entered on the custom tab of the customer record.
 
 If the Avalara Entity Use Code is left unassigned, transactions for that customer are transmitted without a code. As a result, Avalara does not apply any customer-specific tax considerations for those transactions.
-
-For detailed guidance on selecting the appropriate Avalara Entity Use Code, refer to:  
-https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Exempt_reason_matrix_for_the_U.S._and_Canada_entity_use_code_list.html
 
 ### Avalara Entity Use Code Examples
 
@@ -176,7 +173,12 @@ https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Exem
   **Outcome in Hawaii:**  
   - The transaction is **fully taxable**.
 
+#### Help Selecting Avalara Entity Use Codes
+
 Selecting the correct Avalara Entity Use Code is essential because it works in tandem with the destination address and the item’s Avalara Tax Code to determine the final tax outcome. This code identifies the customer’s exemption status and ensures that Avalara applies the appropriate jurisdictional rules and exemption criteria for each transaction.
+
+For detailed guidance on selecting the appropriate Avalara Entity Use Code, refer to:  
+https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Exempt_reason_matrix_for_the_U.S._and_Canada_entity_use_code_list.html
 
 ---
 
@@ -197,6 +199,15 @@ Deposit tickets are not considered sales. A deposit represents a down payment fo
 ## SECTION 5: Avalara Configuration
 
 Accurate sales tax calculation requires that both the Avalara Tax Authority and Avalara Tax Code are properly defined in Counterpoint, and that the Avalara configuration is completed correctly within Store Setup. The steps below ensure that tax calculation is performed by the Avalara Connector rather than by Counterpoint’s standard tax functionality.
+
+**Configuration Steps**
+1. Confirm That the Avalara Tax Authority and Avalara Tax Code Are Properly Defined in Counterpoint  
+2. Configure Custom Settings for the Avalara Connector  
+  - Fallback Tax Code Setup  
+  - Define the Value for “Use Avalara For”  
+  - Define the Avalara Tax Code for Each Miscellaneous Charge  
+3. Enable Avalara Tax Calculation for a Store  
+4. Repeat for additional stores as needed  
 
 ### Confirm That the Avalara Tax Authority and Avalara Tax Code Are Properly Defined in Counterpoint
 

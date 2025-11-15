@@ -19,17 +19,22 @@ If you would like the Avalara connector but your system does not meet these mini
 
 ## Table of Contents
 
+## Table of Contents
+
 - [Minimum System Requirements](#minimum-system-requirements)
-- [SECTION 1: How Counterpoint Connects to Avalara](#section-1-how-counterpoint-connects-to-avalara)
-- [SECTION 2: Key Factors in Avalara’s Tax Calculation](#section-2-key-factors-in-avalaras-tax-calculation)
-  - [1. Address (Header Information)](#1-address-header-information)
-  - [2. Avalara Tax Code (Document Line / Item-Specific Information)](#2-avalara-tax-code-document-line--item-specific-information)
-  - [3. Avalara Entity Use Code (Customer-specific Information)](#3-avalara-entity-use-code-customer-specific-information)
-- [SECTION 3: Avalara Updates](#section-3-avalara-updates)
-- [SECTION 4: Viewing Transactions in an Avalara Account](#section-4-viewing-transactions-in-an-avalara-account)
-- [SECTION 5: Avalara Configuration](#section-5-avalara-configuration)
-- [SECTION 6: Ecommerce Orders and Avalara Tax Calculation](#section-6-ecommerce-orders-and-avalara-tax-calculation)
-- [SECTION 7: Marketplace Location Code Support (eBay, GunBroker, and Other Marketplaces)](#section-7-marketplace-location-code-support-ebay-gunbroker-and-other-marketplaces)
+- [SECTION 1: How the Avalara Connector Works (API Overview)](#section-1-how-the-avalara-connector-works-api-overview)
+- [SECTION 2: How Avalara Determines Tax (Core Inputs and Updates)](#section-2-how-avalara-determines-tax-core-inputs-and-updates)
+- [SECTION 3: Ship-To Address (Document Header-Level Information)](#section-3-ship-to-address-document-header-level-information)
+- [SECTION 4: Avalara Tax Codes (Line Item and Miscellaneous Charge Classification)](#section-4-avalara-tax-codes-line-item-and-miscellaneous-charge-classification)
+- [SECTION 5: Avalara Entity Use Codes (Customer Classification)](#section-5-avalara-entity-use-codes-customer-classification)
+- [SECTION 6: Avalara Configuration](#section-6-avalara-configuration)
+  - [Confirm Avalara Tax Authority and Tax Code](#confirm-that-the-avalara-tax-authority-and-avalara-tax-code-are-properly-defined-in-counterpoint)
+  - [Configure Custom Store Settings](#configure-custom-store-settings-for-the-avalara-connector)
+  - [Enable Avalara Tax Calculation for a Store](#enable-avalara-tax-calculation-for-a-store)
+  - [Enable Avalara for Additional Stores](#enable-avalara-tax-calculation-for-additional-stores)
+- [SECTION 7: Viewing Transactions in an Avalara Account](#section-7-viewing-transactions-in-an-avalara-account)
+- [SECTION 8: Ecommerce Orders and Avalara Tax Calculation](#section-8-ecommerce-orders-and-avalara-tax-calculation)
+- [SECTION 9: Marketplace Location Code Support (eBay, GunBroker, and Other Marketplaces)](#section-9-marketplace-location-code-support-ebay-gunbroker-and-other-marketplaces)
 - [Conclusion](#conclusion)
 
 ---
@@ -198,15 +203,7 @@ https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Exem
 
 ---
 
-## SECTION 6: Viewing Transactions in an Avalara Account
-
-The connector may request tax calculations from Avalara for tickets, orders, or layaways. However, only the **final sale transaction** (the completed ticket) is recorded in the Avalara account.
-
-Deposit tickets are not considered sales. A deposit represents a down payment for a portion of the order total, up to 100 percent. Because a deposit is not a completed sale, deposit tickets are not recorded in Avalara. Only the final completed sale ticket is submitted.
-
----
-
-## SECTION 7: Avalara Configuration
+## SECTION 6: Avalara Configuration
 
 Accurate sales tax calculation requires that both the Avalara Tax Authority and Avalara Tax Code are properly defined in Counterpoint, and that the Avalara configuration is completed correctly within Store Setup. The steps below ensure that tax calculation is performed by the Avalara Connector rather than by Counterpoint’s standard tax functionality.
 
@@ -304,6 +301,14 @@ Until `AVALARA` is assigned as the Store Tax Code, Counterpoint will continue to
 ### Enable Avalara Tax Calculation for Additional Stores
 
 Repeat the steps above for each Counterpoint store that will use the Avalara Connector for tax calculation.
+
+---
+
+## SECTION 7: Viewing Transactions in an Avalara Account
+
+The connector may request tax calculations from Avalara for tickets, orders, or layaways. However, only the **final sale transaction** (the completed ticket) is recorded in the Avalara account.
+
+Deposit tickets are not considered sales. A deposit represents a down payment for a portion of the order total, up to 100 percent. Because a deposit is not a completed sale, deposit tickets are not recorded in Avalara. Only the final completed sale ticket is submitted.
 
 ---
 

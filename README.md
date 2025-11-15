@@ -1,1 +1,374 @@
-# Rapid-Counterpoint-Avalara-Connector
+# Rapid POS Avalara Connector - Version X.X.X
+Updated 11/13/2025
+
+---
+
+## Overview
+
+Avalara is a cloud-based solution designed to simplify tax compliance by automating transaction tax calculations and filing. It uses real-time tax data from over 13,000 U.S. sales and use tax jurisdictions (as of 2025), ensuring your taxes are calculated based on the most current rules.
+
+---
+
+## Minimum System Requirements:
+- Minimum Counterpoint version: **8.5.6.2**
+- Minimum SQL Server version: **2016**
+
+If you would like the Avalara connector but your system does not meet these minimum requirements, please consult your Care Team Lead (vCIO) for an upgrade quote.
+
+---
+
+## Table of Contents
+
+- [Minimum System Requirements](#minimum-system-requirements)
+- [Section 1:
+
+---
+
+## SECTION 1: How Counterpoint Connects to Avalara
+
+Rapid’s Counterpoint-to-Avalara connector communicates with Avalara through multiple API calls:
+
+### 1. Transaction Submission
+Counterpoint sends transaction details to Avalara, which uses this data to calculate applicable taxes.
+
+### 2. Tax Retrieval
+Avalara returns the calculated tax amount, which is then applied to the document (ticket, order, or layaway).
+
+### 3. Document Updates
+If the document changes (e.g., items added, removed, or modified), updated tax information is retrieved.
+
+### 4. Final Reporting
+Once a ticket is completed and taxes are collected, the final tax data is reported back to Avalara.
+
+---
+
+## SECTION 2: Key Factors in Avalara’s Tax Calculation
+
+Avalara considers three main inputs in real-time for tax calculation:
+
+1. **Ship-To Address** (or **Store Address** if Ship-To is not used)
+2. **Avalara Tax Code** (item or miscellaneous charge)
+3. **Avalara Entity Use Code** (customer-specific exemption)
+
+Let’s explore each in detail:
+
+### 1. Address (Header Information)
+
+Providing a complete and accurate address is essential. Avalara uses geolocation to determine applicable tax rules. A full ship-to address should include:
+
+- **Street Address**
+- **City**
+- **State**
+- **ZIP Code**
+
+**Why it matters:**  
+ZIP codes alone do not capture local tax variations. For example, Greenwood Village, CO has one ZIP code but four different tax jurisdictions.
+
+If no ship-to address is provided, the **store address** will be used.
+
+[IMAGE PLACEHOLDER]
+
+### 2. Avalara Tax Code (Document Line / Item-Specific Information)
+
+Avalara does not rely on simple taxable or exempt flags for items. Instead, Avalara determines taxability based on the type of item (or miscellaneous charge) and the tax rules that apply to the destination location, including any customer-specific tax considerations. The **Avalara Tax Code** identifies the product type so that Avalara can calculate taxes accurately. In some situations, products may be partially taxable or taxed at a higher-than-normal rate.
+
+#### Where Tax Codes Are Assigned
+
+- **Items**  
+  Assigned within **Setup > System > Items**, on the item record’s custom tab. The custom tab name may vary by configuration, but it is always the final tab in the item record.
+
+  [IMAGE PLACEHOLDER]
+
+- **Miscellaneous Charges**  
+  Assigned within **Setup > Point of Sale > Stores > Custom Tab**, on the store record’s custom tab.
+
+  [IMAGE PLACEHOLDER]  
+  
+#### Defaults
+
+If no tax code is assigned to an item, Avalara classifies the item as **tangible personal property (TPP)** and applies the default Avalara code **`P0000000`**, which designates standard taxable goods.
+
+**Result:**  
+The standard sales tax rate for the destination location is applied. This typically means the item is taxed according to the jurisdiction’s default rules for general merchandise, unless a customer-specific exemption or special tax condition applies.
+
+For **miscellaneous charges** without an assigned tax code, no tax information is transmitted to Avalara. Therefore, it is essential to assign tax codes for miscellaneous charges in each store so they are included as document lines when the transaction is sent to Avalara.
+
+For detailed guidance on selecting the appropriate Avalara Tax Codes, refer to:  
+https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Avalara_tax_codes.html
+
+#### Tax Code Examples
+
+**Item Tax Code Example 1**
+The Avalara Tax Code is set to **`PC040110` Clothing and Related Products – Business-to-Customer – Boots**, and the transaction occurs in **Rhode Island**. The footwear has a price of **$125**. According to Avalara tax rules, this item will be tax exempt. However, if the price exceeds **$250**, the item becomes taxable.
+
+If this transaction occurs in **South Carolina**, the item is generally taxable for most of the year, except during the **back-to-school tax holiday** held during the first weekend of August. During that period, clothing, footwear, and selected school-related supplies are tax exempt.
+
+**Item Tax Code Example 2**
+The Avalara Tax Code is set to **`PF050000` Food and Food Ingredients – Non-Prepared Foods – Sold by Qualified Food Retailer**, and the transaction occurs in **Pennsylvania**. In that state, this item is generally not taxed.
+
+If the same transaction occurs in **Missouri**, the item is typically taxed, but at a **reduced rate** compared to standard general merchandise.
+
+Selecting the correct Avalara Tax Code is essential because it works alongside the destination address and the customer's Entity Use Code to determine the final tax result. These three inputs form the foundation of Avalara’s calculation logic, and accurate tax codes result in a reliable and compliant tax calculation.
+
+### 3. Avalara Entity Use Code (Customer-specific Information)
+
+Avalara does not rely solely on a basic tax-exempt or non-exempt flag for customers. Instead, Avalara evaluates the customer’s tax-exempt reason and the tax rules that apply at the destination location, along with the item’s Avalara Tax Code when relevant. This approach enables Avalara to determine customer-specific exemptions based on both the jurisdiction and the type of products being purchased.
+
+Each customer record in Counterpoint can be assigned its own **Avalara Entity Use Code**. Assigned within **Customers > Customers**, this code is entered on the custom tab of the customer record.
+
+If the Avalara Entity Use Code is left unassigned, transactions for that customer are transmitted without a code. As a result, Avalara does not apply any customer-specific tax considerations for those transactions.
+
+For detailed guidance on selecting the appropriate Avalara Entity Use Code, refer to:  
+https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Exempt_reason_matrix_for_the_U.S._and_Canada_entity_use_code_list.html
+
+### Avalara Entity Use Code Examples
+
+**Customer Entity Use Code Example 1**
+The customer’s Entity Use Code is set to **`Charitable / Exempt Organization`**, and the transaction occurs in **North Carolina**. North Carolina does not exempt tax on sales to charitable organizations, so the transaction is taxable.  
+If the same scenario occurs in **Alabama**, the transaction is exempt.
+
+**Customer Entity USe Code Example 2**
+The customer’s Entity Use Code is set to **`Agriculture`** (based on an agricultural exemption certificate), the transaction occurs in **California**, and the product purchased is fruit-harvesting equipment with Avalara Tax Code **`PA020100` Agricultural – Commercial Use – Machinery and Equipment**.
+
+In **California**, partial tax is applied because the state allows a 5% reduction for agricultural exemption certificate holders purchasing qualifying machinery.  
+
+If the same transaction occurs in **Michigan**, the sale is fully exempt.  
+
+If it occurs in **Hawaii**, the sale is fully taxable.
+
+Selecting the correct Avalara Entity Use Code is essential because it works in tandem with the destination address and the item’s Avalara Tax Code to determine the final tax outcome. This code identifies the customer’s exemption status and ensures that Avalara applies the appropriate jurisdictional rules and exemption criteria for each transaction.
+
+---
+
+## SECTION 3: Avalara Updates
+
+A nightly update from Avalara refreshes the list of available **Item Avalara Tax Codes** and **Customer Avalara Entity Use Codes** within Counterpoint. This process ensures that the most current and valid codes are available for selection and helps maintain accurate and compliant tax calculation.
+
+---
+
+## SECTION 4: Viewing Transactions in an Avalara Account
+
+The connector may request tax calculations from Avalara for tickets, orders, or layaways. However, only the **final sale transaction** (the completed ticket) is recorded in the Avalara account.
+
+Deposit tickets are not considered sales. A deposit represents a down payment for a portion of the order total, up to 100 percent. Because a deposit is not a completed sale, deposit tickets are not recorded in Avalara. Only the final completed sale ticket is submitted.
+
+---
+
+## SECTION 5: Avalara Configuration
+
+Accurate sales tax calculation requires that both the Avalara Tax Authority and Avalara Tax Code are properly defined in Counterpoint, and that the Avalara configuration is completed correctly within Store Setup. The steps below ensure that tax calculation is performed by the Avalara Connector rather than by Counterpoint’s standard tax functionality.
+
+### Confirm That the Avalara Tax Authority and Avalara Tax Code Are Properly Defined in Counterpoint
+
+- Tax Authority Setup for Avalara
+  - To review the configuration for the Avalara Tax Authority, navigate to: **Setup > System > Tax Authorities**
+
+[IMAGE PLACEHOLDER]
+
+- Tax Code Setup for Avalara
+  - To review the configuration for the Avalara Tax Code, navigate to: **Setup > System > Tax Codes**
+
+[IMAGE PLACEHOLDER]
+
+The Avalara Tax Code will later be assigned to each store that should rely on Avalara for tax calculation. A **Fallback Tax Code** must also be configured to support scenarios in which the Avalara Connector is unable to communicate with Avalara, such as during a temporary outage.
+
+### Configure Custom Settings for the Avalara Connector
+
+It is recommended to first configure the store’s **Custom** tab. These settings can be entered at any time. The final configuration on the **Main** tab determines when the Avalara Connector becomes active.
+
+Navigate to: **Setup > Point of Sale > Stores > Custom Tab**
+
+The following fields must be configured:
+
+1. Fallback Tax Code  
+2. Value for **“Use Avalara For”**  
+3. Avalara Tax Code for each miscellaneous charge  
+
+#### 1. Fallback Tax Code Setup
+
+Select a Fallback Tax Code to be used when a connection to Avalara cannot be established.
+
+If no tax codes have been defined yet,
+- Navigate to: **Setup > System > Tax Codes**
+- Create the required tax code
+- Return to:**Setup > Point of Sale > Stores > Custom Tab**
+- and assign it to the Fallback Tax Code field
+
+#### 2. Define the Value for “Use Avalara For”
+
+Valid options include:
+
+- **All Transactions** (Recommended)  
+  - Ensures that all documents have taxes calculated using Avalara Tax Codes and the customer’s Entity Use Code.  
+  - Provides consistent calculation even when store-based rules would otherwise apply.  
+  - Transmits all transactions to Avalara, supporting accurate reporting and tax remittance.
+
+- **Out-of-State Transactions**  
+  - Counterpoint evaluates the ship-to state and compares it to the store’s state.  
+  - **If the ship-to state matches the store’s state:**  
+    - The Fallback Tax Code is used.  
+    - The transaction is not reported to Avalara.  
+  - **If the ship-to state is blank:**  
+    - The Fallback Tax Code is used.  
+    - The transaction is not reported to Avalara.  
+  - **If the ship-to state does not match the store’s state** and the specified tax code is an Avalara Tax Code:  
+    - The transaction is transmitted to Avalara.  
+    - Avalara calculates and applies the tax and reports the transaction.
+
+- **Ship-To Transactions**  
+  - Not currently a valid option.  
+  - Planned for future development.  
+  - Once implemented, the connector will retrieve tax from Avalara only when the document contains a ship-to address.
+
+#### 3. Define the Avalara Tax Code for Each Miscellaneous Charge
+
+- Assign an Avalara Tax Code to each miscellaneous charge used by the store.  
+- This ensures that each charge is sent to Avalara as a document line and included in the tax calculation.
+
+### Enable Avalara Tax Calculation for a Store
+
+Navigate to: **Setup > Point of Sale > Stores > Main Tab**
+
+Within the **Main** tab:
+- Set **Use tax code from** to **`Store`**  
+- Set **Store tax code** to **`AVALARA`**
+
+These settings ensure that all transactions from the store are sent to Avalara for real-time tax determination.
+
+**Important:**  
+The `AVALARA` Tax Code must not be entered until the store is ready for Avalara to begin calculating tax.
+
+Until `AVALARA` is assigned as the Store Tax Code, Counterpoint will continue to calculate tax using its internal tax rules, which may not reflect the most current jurisdictional rates or tax structures.
+
+### Enable Avalara Tax Calculation for Additional Stores
+
+Repeat the steps above for each Counterpoint store that will use the Avalara Connector for tax calculation.
+
+---
+
+## SECTION 6: Ecommerce Orders and Avalara Tax Calculation
+
+Rapid’s Avalara Connector calculates tax for manually entered tickets and orders in Counterpoint. However, it does not calculate tax for orders imported through Rapid’s ecommerce connectors. Each ecommerce platform uses its own tax engine to determine sales tax at checkout, and that tax amount should remain unchanged when the order arrives in Counterpoint.
+
+### How Imported Ecommerce Orders Are Handled in Counterpoint
+
+When an order is imported into Counterpoint from an ecommerce platform:
+
+- The order is automatically assigned to a designated **ecommerce store** in Counterpoint.  
+- The tax calculated by the ecommerce platform is preserved exactly as provided.  
+- The Avalara Connector does not attempt to recalculate or modify this tax.
+
+This ensures that the tax determined by the website remains consistent on the order.
+
+### Preventing Avalara Tax Calculation on Ecommerce Orders
+
+To ensure that Avalara does not calculate tax for ecommerce transactions:
+
+- **Do not assign an Avalara Tax Code to the ecommerce store.**  
+- This prevents the Avalara Connector from attempting to process ecommerce-originated transactions.  
+- As a result, ecommerce orders remain excluded from Avalara’s tax calculation and are not sent to Avalara for reporting.
+
+This configuration keeps ecommerce tax logic separate from Counterpoint, avoiding conflicting tax results.
+
+### Example Scenario
+
+A customer places an order on a WooCommerce website. WooCommerce uses its own tax engine to calculate tax at checkout, then stores that tax amount with the order.
+
+When the order is imported into Counterpoint:
+
+1. The order is assigned automatically to the designated ecommerce store.  
+2. The tax amount calculated by WooCommerce is preserved.  
+3. The ecommerce store is not configured with an Avalara Tax Code, so the Avalara Connector does not calculate or update tax.  
+4. The transaction is recorded in Counterpoint exactly as it was calculated on WooCommerce.  
+5. The transaction is **not** reported to Avalara.  
+
+This prevents duplicate or conflicting tax calculations and keeps ecommerce activity separate from in-store transactions.
+
+### When Ecommerce Transactions Should Be Reported to Avalara
+
+There are two situations where ecommerce transactions **can** be reported to Avalara:
+
+#### **1. Using an Avalara Plugin on the Ecommerce Platform**
+If the ecommerce platform supports an Avalara plugin:
+
+- The website can send completed ecommerce transactions directly to Avalara.  
+- Avalara calculates tax at checkout.  
+- Avalara records the transaction for nexus purposes.  
+- Counterpoint simply imports the order without recalculating tax.
+
+This is the recommended method if Avalara reporting is required. Work with your web developer and Avalara account representative to learn more about this setup.
+
+#### **2. Treating the Ecommerce Platform as a Marketplace**
+If the ecommerce platform calculates and remits tax on the retailer’s behalf and does not report this to Avalara directly:
+
+- Ecommerce activity may be treated as marketplace activity.  
+- A **Marketplace Location Code** can be used to send completed ecommerce sales to Avalara for **record-only** reporting (without tax calculation).  
+
+This ensures that ecommerce sales contribute to economic nexus tracking even if the ecommerce platform handles tax remittance.
+
+### Summary
+
+- Ecommerce platforms calculate tax independently of Avalara.  
+- To prevent conflicts, ecommerce stores in Counterpoint must **not** be assigned an Avalara Tax Code.  
+- Ecommerce transactions are not reported to Avalara unless the website uses an Avalara plugin or a Marketplace Location Code is configured for record-only reporting.  
+- This approach preserves tax accuracy and keeps ecommerce, in-store, and marketplace transactions clearly separated within Avalara.
+
+---
+
+## SECTION 7: Marketplace Location Code Support (eBay, GunBroker, and Other Marketplaces)
+
+Many online marketplaces, such as **eBay** and **GunBroker**, collect and remit sales tax on behalf of the seller. Because tax is handled directly by the marketplace, these transactions do not require real-time tax calculation through Avalara. However, the **gross sales amounts** from these marketplace transactions still contribute toward **economic nexus thresholds**. For this reason, completed marketplace sales must often be recorded in Avalara — **without** calculating tax — so that Avalara can include them in nexus determination and reporting.
+
+The Avalara Connector supports this requirement through **Marketplace Location Codes**.
+
+### How Marketplace Transactions Are Identified in Counterpoint
+
+Each marketplace should have its own **marketplace-specific tax code** defined in Counterpoint, such as `EBAY` or `GUNBROKER`. These tax codes do not perform tax calculation. Instead, they act as identifiers that allow the Avalara Connector to determine:
+
+- which transactions originated from a marketplace, and  
+- which **Marketplace Location Code** should be applied during transmission to Avalara.
+
+The marketplace tax code must be assigned correctly to all corresponding transactions in Counterpoint to ensure accurate reporting in Avalara.
+
+### What a Marketplace Location Code Is
+
+A **Marketplace Location Code** is an identifier created within Avalara that represents a specific marketplace (such as eBay or GunBroker). When a completed Counterpoint transaction is sent to Avalara with this code:
+
+- The transaction is recorded for **gross sales tracking**  
+- Avalara does **not** calculate tax  
+- The sale is included in **economic nexus** evaluation  
+- The transaction is grouped and handled separately from in-store and ecommerce sales  
+
+This allows marketplace activity to be reflected in Avalara reporting without affecting the seller’s tax liability.
+
+### Configuring the Marketplace Location Code in Counterpoint
+
+Marketplace configuration is completed within the Tax Code setup. To configure the **Avalara Marketplace Location Code** and **Tax Override for Nexus Calculation**, navigate to:
+
+**Setup > System > Tax Codes > Custom Tab**
+
+For each tax code associated with a marketplace (e.g., `EBAY`, `GUNBROKER`), review the following fields:
+
+- **Avalara Marketplace Location Code**  
+  Specifies which Marketplace Location Code from your Avalara account should be attached to transactions recorded with this tax code. This is what allows Avalara to recognize the transaction as marketplace-originated.
+
+- **Use Document for Nexus Calculation**  
+  Overrides tax calculation and sets the tax amount to **0**, ensuring that Avalara records the transaction **for nexus reporting only**, without attempting to calculate or adjust tax.
+
+These settings allow Counterpoint to send completed marketplace transactions to Avalara for **record-only transmission**, without triggering tax calculation.
+
+### Summary
+
+Marketplace Location Code functionality ensures that marketplace sales are properly included in Avalara’s reporting and nexus analysis, even though tax is remitted by the marketplace itself.
+
+This functionality enables Avalara to:
+
+- Record marketplace sales without calculating tax  
+- Keep marketplace sales distinct from in-store and ecommerce activity  
+- Ensure all sales channels contribute to economic nexus thresholds  
+- Provide accurate multi-channel sales reporting within a single Avalara account  
+
+This support is especially important when using marketplaces such as eBay and GunBroker, where the marketplace — not the seller — is responsible for tax calculation and remittance.
+
+
+

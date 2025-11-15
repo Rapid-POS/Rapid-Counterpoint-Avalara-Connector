@@ -82,7 +82,7 @@ If no ship-to address is provided, the **store address** will be used.
 
 Avalara does not rely on simple taxable or exempt flags for items. Instead, Avalara determines taxability based on the type of item (or miscellaneous charge) and the tax rules that apply to the destination location, including any customer-specific tax considerations. The **Avalara Tax Code** identifies the product type so that Avalara can calculate taxes accurately. In some situations, products may be partially taxable or taxed at a higher-than-normal rate.
 
-#### Where Tax Codes Are Assigned
+#### Where Avalara Tax Codes Are Assigned
 
 - **Items**  
   Assigned within **Setup > System > Items**, on the item record’s custom tab. The custom tab name may vary by configuration, but it is always the final tab in the item record.
@@ -106,22 +106,38 @@ For **miscellaneous charges** without an assigned tax code, no tax information i
 For detailed guidance on selecting the appropriate Avalara Tax Codes, refer to:  
 https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Avalara_tax_codes.html
 
-#### Tax Code Examples
+#### Avalara Tax Code Examples
 
 **Item Tax Code Example 1**
-The Avalara Tax Code is set to **`PC040110` Clothing and Related Products – Business-to-Customer – Boots**, and the transaction occurs in **Rhode Island**. The footwear has a price of **$125**. According to Avalara tax rules, this item will be tax exempt. However, if the price exceeds **$250**, the item becomes taxable.
 
-If this transaction occurs in **South Carolina**, the item is generally taxable for most of the year, except during the **back-to-school tax holiday** held during the first weekend of August. During that period, clothing, footwear, and selected school-related supplies are tax exempt.
+  - **Avalara Tax Code:** `PC040110` – Clothing and Related Products (Business-to-Customer) – Boots  
+  - **Location:** Rhode Island  
+  - **Item Price:** $125  
+
+  **Outcome in Rhode Island:**  
+  - The item is **tax exempt** at this price point.  
+  - If the price exceeds **$250**, the item becomes **taxable** under Rhode Island rules.
+
+  **Outcome in South Carolina:**  
+  - The item is **generally taxable** for most of the year.  
+  - It becomes **tax exempt** during the **back-to-school tax holiday** held the first weekend of August, which includes clothing, footwear, and selected school supplies.
+
 
 **Item Tax Code Example 2**
-The Avalara Tax Code is set to **`PF050000` Food and Food Ingredients – Non-Prepared Foods – Sold by Qualified Food Retailer**, and the transaction occurs in **Pennsylvania**. In that state, this item is generally not taxed.
 
-If the same transaction occurs in **Missouri**, the item is typically taxed, but at a **reduced rate** compared to standard general merchandise.
+  - **Avalara Tax Code:** `PF050000` – Food and Food Ingredients (Non-Prepared Foods) – Sold by Qualified Food Retailer  
+  - **Location:** Pennsylvania  
 
-Selecting the correct Avalara Tax Code is essential because it works alongside the destination address and the customer's Entity Use Code to determine the final tax result. These three inputs form the foundation of Avalara’s calculation logic, and accurate tax codes result in a reliable and compliant tax calculation.
+  **Outcome in Pennsylvania:**  
+  - The item is **generally not taxed** under Pennsylvania’s rules for non-prepared food items.
 
-### 3. Avalara Entity Use Code (Customer-specific Information)
+  **Outcome in Missouri:**  
+  - The item is **taxable**, but typically at a **reduced tax rate** compared to standard general merchandise.
 
+Selecting the correct Avalara Tax Code is essential because it works alongside the destination address and the customer's Entity Use Code to determine the final tax result. These three inputs form the foundation of Avalara’s calculation logic, and accurate tax codes result in a reliable and compliant tax calculation.  
+  
+### 3. Avalara Entity Use Code (Customer-specific Information)  
+  
 Avalara does not rely solely on a basic tax-exempt or non-exempt flag for customers. Instead, Avalara evaluates the customer’s tax-exempt reason and the tax rules that apply at the destination location, along with the item’s Avalara Tax Code when relevant. This approach enables Avalara to determine customer-specific exemptions based on both the jurisdiction and the type of products being purchased.
 
 Each customer record in Counterpoint can be assigned its own **Avalara Entity Use Code**. Assigned within **Customers > Customers**, this code is entered on the custom tab of the customer record.
@@ -134,17 +150,31 @@ https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Exem
 ### Avalara Entity Use Code Examples
 
 **Customer Entity Use Code Example 1**
-The customer’s Entity Use Code is set to **`Charitable / Exempt Organization`**, and the transaction occurs in **North Carolina**. North Carolina does not exempt tax on sales to charitable organizations, so the transaction is taxable.  
-If the same scenario occurs in **Alabama**, the transaction is exempt.
 
-**Customer Entity USe Code Example 2**
-The customer’s Entity Use Code is set to **`Agriculture`** (based on an agricultural exemption certificate), the transaction occurs in **California**, and the product purchased is fruit-harvesting equipment with Avalara Tax Code **`PA020100` Agricultural – Commercial Use – Machinery and Equipment**.
+  - **Entity Use Code:** `Charitable / Exempt Organization`  
+  - **Location:** North Carolina  
 
-In **California**, partial tax is applied because the state allows a 5% reduction for agricultural exemption certificate holders purchasing qualifying machinery.  
+  **Outcome in North Carolina:**  
+  - Sales to charitable organizations are **not exempt**, so the transaction is **taxable**.
 
-If the same transaction occurs in **Michigan**, the sale is fully exempt.  
+  **Outcome in Alabama:**  
+  - Sales to charitable organizations are **tax exempt**, so the transaction is **not taxed**.
 
-If it occurs in **Hawaii**, the sale is fully taxable.
+**Customer Entity Use Code Example 2**
+
+  - **Entity Use Code:** `Agriculture` (based on an agricultural exemption certificate)  
+  - **Item Tax Code:** `PA020100` – Agricultural, Commercial Use – Machinery and Equipment
+  - **Location:** California  
+
+  **Outcome in California:**  
+  - A **partial tax** is applied.  
+  - California allows a **5% tax reduction** for customers with an agricultural exemption certificate purchasing qualifying machinery.
+
+  **Outcome in Michigan:**  
+  - The transaction is **fully exempt**.
+
+  **Outcome in Hawaii:**  
+  - The transaction is **fully taxable**.
 
 Selecting the correct Avalara Entity Use Code is essential because it works in tandem with the destination address and the item’s Avalara Tax Code to determine the final tax outcome. This code identifies the customer’s exemption status and ensures that Avalara applies the appropriate jurisdictional rules and exemption criteria for each transaction.
 
@@ -294,7 +324,7 @@ When the order is imported into Counterpoint:
 
 This prevents duplicate or conflicting tax calculations and keeps ecommerce activity separate from in-store transactions.
 
-### When Ecommerce Transactions Should Be Reported to Avalara
+### Reporting Ecommerce Transactions to Avalara
 
 There are two situations where ecommerce transactions **can** be reported to Avalara:
 

@@ -1,5 +1,5 @@
 # Rapid POS Avalara Connector - Version X.X.X
-Updated 11/13/2025
+Updated 11/14/2025
 
 ---
 

@@ -145,31 +145,30 @@ If the Avalara Entity Use Code is left unassigned, transactions for that custome
 ### Avalara Entity Use Code Examples
 
 **Customer Entity Use Code Example 1**
-
-  - **Entity Use Code:** `Charitable / Exempt Organization`  
-  - **Location:** North Carolina  
-
-  **Outcome in North Carolina:**  
-  - Sales to charitable organizations are **not exempt**, so the transaction is **taxable**.
-
-  **Outcome in Alabama:**  
-  - Sales to charitable organizations are **tax exempt**, so the transaction is **not taxed**.
+>- **Entity Use Code:** `Charitable / Exempt Organization`  
+>- **Location:** North Carolina  
+>
+>**Outcome in North Carolina:**  
+>- Sales to charitable organizations are **not exempt**, so the transaction is **taxable**.
+>
+>**Outcome in Alabama:**  
+>- Sales to charitable organizations are **tax exempt**, so the transaction is **not taxed**.
 
 **Customer Entity Use Code Example 2**
+>- **Entity Use Code:** `Agriculture` (based on an agricultural exemption certificate)  
+>- **Item Tax Code:** `PA020100` – Agricultural, Commercial Use – Machinery and Equipment
+>- **Location:** California  
+>
+>**Outcome in California:**  
+>- A **partial tax** is applied.  
+>- California allows a **5% tax reduction** for customers with an agricultural exemption certificate purchasing qualifying machinery.
+>
+>**Outcome in Michigan:**  
+>- The transaction is **fully exempt**.
+>
+**Outcome in Hawaii:**  
+>- The transaction is **fully taxable**.
 
-  - **Entity Use Code:** `Agriculture` (based on an agricultural exemption certificate)  
-  - **Item Tax Code:** `PA020100` – Agricultural, Commercial Use – Machinery and Equipment
-  - **Location:** California  
-
-  **Outcome in California:**  
-  - A **partial tax** is applied.  
-  - California allows a **5% tax reduction** for customers with an agricultural exemption certificate purchasing qualifying machinery.
-
-  **Outcome in Michigan:**  
-  - The transaction is **fully exempt**.
-
-  **Outcome in Hawaii:**  
-  - The transaction is **fully taxable**.
 
 #### Help Selecting Avalara Entity Use Codes
 
@@ -200,7 +199,7 @@ Accurate sales tax calculation requires that both the Avalara Tax Authority and 
 
 **Configuration Steps**
 1. Confirm That the Avalara Tax Authority and Avalara Tax Code Are Properly Defined in Counterpoint  
-2. Configure Custom Settings for the Avalara Connector  
+2. Configure Custom Store Settings for the Avalara Connector  
   - Fallback Tax Code Setup  
   - Define the Value for “Use Avalara For”  
   - Define the Avalara Tax Code for Each Miscellaneous Charge  
@@ -221,7 +220,7 @@ Accurate sales tax calculation requires that both the Avalara Tax Authority and 
 
 The Avalara Tax Code will later be assigned to each store that should rely on Avalara for tax calculation. A **Fallback Tax Code** must also be configured to support scenarios in which the Avalara Connector is unable to communicate with Avalara, such as during a temporary outage.
 
-### Configure Custom Settings for the Avalara Connector
+### Configure Custom Store Settings for the Avalara Connector
 
 It is recommended to first configure the store’s **Custom** tab. These settings can be entered at any time. The final configuration on the **Main** tab determines when the Avalara Connector becomes active.
 

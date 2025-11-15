@@ -20,7 +20,17 @@ If you would like the Avalara connector but your system does not meet these mini
 ## Table of Contents
 
 - [Minimum System Requirements](#minimum-system-requirements)
-- [Section 1:
+- [SECTION 1: How Counterpoint Connects to Avalara](#section-1-how-counterpoint-connects-to-avalara)
+- [SECTION 2: Key Factors in Avalara’s Tax Calculation](#section-2-key-factors-in-avalaras-tax-calculation)
+  - [1. Address (Header Information)](#1-address-header-information)
+  - [2. Avalara Tax Code (Document Line / Item-Specific Information)](#2-avalara-tax-code-document-line--item-specific-information)
+  - [3. Avalara Entity Use Code (Customer-specific Information)](#3-avalara-entity-use-code-customer-specific-information)
+- [SECTION 3: Avalara Updates](#section-3-avalara-updates)
+- [SECTION 4: Viewing Transactions in an Avalara Account](#section-4-viewing-transactions-in-an-avalara-account)
+- [SECTION 5: Avalara Configuration](#section-5-avalara-configuration)
+- [SECTION 6: Ecommerce Orders and Avalara Tax Calculation](#section-6-ecommerce-orders-and-avalara-tax-calculation)
+- [SECTION 7: Marketplace Location Code Support (eBay, GunBroker, and Other Marketplaces)](#section-7-marketplace-location-code-support-ebay-gunbroker-and-other-marketplaces)
+- [Conclusion](#conclusion)
 
 ---
 
@@ -372,7 +382,9 @@ This support is especially important when using marketplaces such as eBay and Gu
 
 ## Conclusion  
 
-The Rapid Avalara Connector
+The Rapid Avalara Connector ensures accurate and compliant sales tax calculation across Counterpoint by integrating Avalara’s real-time tax engine with your in-store, ecommerce, and marketplace workflows. With proper configuration of Tax Codes, Entity Use Codes, Marketplace Location Codes, and store settings, each transaction is processed according to the correct jurisdictional rules and reporting requirements.
 
-For assistance with configuration changes, mapping, or troubleshooting, contact Rapid Support. 
+As your business expands and tax obligations evolve, Avalara provides the flexibility to support additional states, channels, and volume. The Rapid Avalara Connector keeps your Counterpoint environment aligned with these changes to maintain consistent and dependable tax results.
+
+For assistance with configuration changes or troubleshooting, contact Rapid Support. 
 

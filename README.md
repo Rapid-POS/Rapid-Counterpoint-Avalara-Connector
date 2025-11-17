@@ -7,6 +7,8 @@ Updated 11/14/2025
 
 Avalara is a cloud-based solution designed to simplify tax compliance by automating transaction tax calculations and filing. It uses real-time tax data from over 13,000 U.S. sales and use tax jurisdictions (as of 2025), ensuring your taxes are calculated based on the most current rules.
 
+Rapid's Counterpoint to Avalara connector allows for real-time sales tax calculation within Counterpoint as well as sales tax reporting within Avalara. 
+
 ---
 
 ## Minimum System Requirements:

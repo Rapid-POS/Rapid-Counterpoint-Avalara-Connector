@@ -7,7 +7,7 @@ Updated 11/14/2025
 
 Avalara is a cloud-based solution designed to simplify tax compliance by automating transaction tax calculations and filing. It uses real-time tax data from over 13,000 U.S. sales and use tax jurisdictions (as of 2025), ensuring your taxes are calculated based on the most current rules.
 
-Rapid's Counterpoint to Avalara connector allows for real-time sales tax calculation within Counterpoint as well as sales tax reporting within Avalara. 
+Rapid’s Counterpoint-to-Avalara connector delivers real-time sales tax calculations in Counterpoint and supports accurate, streamlined sales tax reporting through Avalara. 
 
 ---
 
@@ -57,13 +57,15 @@ If the Counterpoint document changes (items added, removed, or modified), the co
 ### 4. Transaction Commit (Completed Ticket)  
 When a ticket is completed in Counterpoint, the final tax data is reported back to Avalara. Avalara stores the final transaction in its reporting system.  
 
+Avalara’s billing model often factors in the number of API calls, so it’s important to understand how Counterpoint activity affects call volume. Within Counterpoint, the **hold-and-recall** process triggers a tax calculation request to Avalara. For a typical ticket, this occurs when the end-user first clicks **Pay**, prompting Avalara to calculate tax based on the current data. If the ticket is later modified, the connector must send the updated information to Avalara to recalculate tax, generating an additional API call. A final call is made when the ticket is completed, committing the transaction to Avalara’s reporting system.
+
 ---
 
 ## SECTION 2: How Avalara Determines Tax (Core Inputs and Updates)
 
-Avalara’s calculation engine evaluates each transaction using three essential inputs:
+Avalara’s tax calculation engine evaluates each transaction using three essential inputs:
 
-1. **Destination Address** (Ship-To Address, or Store Address when no Ship-To is provided)  
+1. **Destination Address** (Ship-To Address or Store Address when no Ship-To is provided)  
 2. **Avalara Tax Code** (assigned to each item or miscellaneous charge)  
 3. **Avalara Entity Use Code** (assigned to the customer to represent exemption status)
 
@@ -80,7 +82,7 @@ This process updates the lists of codes published by Avalara, ensuring that the 
 
 **Important:**  
 - The nightly update refreshes only the **lists of available codes**.  
-- It does **not** modify, remove, or replace any existing Item Tax Code or Entity Use Code assignments already stored in Counterpoint. All previously assigned codes remain unchanged unless manually updated by the user.
+- It does **not** modify, remove, or replace any existing Item Tax Code or Customer Entity Use Code assignments already stored in Counterpoint. All previously assigned codes remain unchanged unless manually updated by the user.
 
 ---
 
@@ -97,10 +99,7 @@ Avalara relies on precise geographical information to determine which state, cou
 ZIP Code alone is not sufficient for accurate tax calculation. Many ZIP Codes span multiple tax jurisdictions. Avalara uses geolocation to map the full address to the correct jurisdiction.
 
 ### Address Fallback  
-If no ship-to address is provided:
-
-- The **store address** is used as the destination  
-- Taxes are calculated based on the store’s physical location  
+If no ship-to address is provided, the **store address** is used as the destination. Therefore; when no-ship to address is present, taxes are calculated based on the store’s physical location.  
 
 ---
 
@@ -112,7 +111,7 @@ Avalara does not rely on simple taxable or exempt flags for items. Instead, Aval
 - **Items:** Assigned on the item record’s Custom tab  
 - **Miscellaneous Charges:** Assigned on the Store record’s Custom tab  
 
-### Default Behavior  
+### Behavior When No Tax Code Is Assigned 
 
 If no Avalara Tax Code is assigned to an **item**:
 - Avalara applies the default code **`P0000000`** for **tangible personal property (TPP)**  
@@ -120,6 +119,8 @@ If no Avalara Tax Code is assigned to an **item**:
 
 If no Avalara Tax Code is assigned to a **miscellaneous charge**:
 - No information for that MISC charge is transmitted to Avalara
+
+It is important to note that Avalara does not consider Counterpoint's taxable flag at all, but this value can be important during an outage that requires use of the Fallback Tax Code.  
   
 ### **Item Tax Code Example 1**
 
@@ -153,11 +154,13 @@ Selecting the correct Avalara Tax Code is essential because it works alongside t
 For detailed guidance on selecting the appropriate Avalara Tax Codes, refer to:  
 https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Avalara_tax_codes.html
 
+Please note that Rapid cannot provide guidance on selecting tax codes for specific items; however, Avalara's support team includes taxation experts who can assist with that.  
+
 ---
 
 ## SECTION 5: Avalara Entity Use Codes (Customer Classification)
   
-Avalara does not rely solely on simple taxable or exempt flags for customers. Instead, Avalara determines taxability in part based on the customer’s tax-exempt reason. The **Avalara Entity Use Code** identifies the customer's tax-exempt reason so that Avalara can calculate taxes accurately.
+Avalara does not rely on simple taxable or exempt flags for customers. Instead, Avalara determines taxability in part based on the customer’s tax-exempt reason. The **Avalara Entity Use Code** identifies the customer's tax-exempt reason so that Avalara can calculate taxes accurately.
 
 ### Assigning Entity Use Codes in Counterpoint  
 Entity Use Codes are assigned on:
@@ -165,10 +168,10 @@ Entity Use Codes are assigned on:
 - The **Customer record’s Custom tab**
 
 ### Behavior When No Entity Use Code Is Assigned  
-If the field is left blank:
-
-- The transaction is submitted without exemption information  
-- Avalara does not apply customer-based exemptions 
+If no Avalara Entity Use Code is assigned to a **customer**:
+- The transaction is submitted without exemption information, so Avalara does not apply customer-based exemptions
+- This is quite common as typically most customers are not tax exempt
+- It is important to note that Avalara does not consider Counterpoint's taxable flag at all, but this value can be important during an outage that requires use of the Fallback Tax Code.  
 
 ### **Customer Entity Use Code Example 1**
 
@@ -202,6 +205,8 @@ Selecting the correct Avalara Entity Use Code is essential because it works in t
 
 For detailed guidance on selecting the appropriate Avalara Entity Use Code, refer to:  
 https://knowledge.avalara.com/bundle/dqa1657870670369_dqa1657870670369/page/Exempt_reason_matrix_for_the_U.S._and_Canada_entity_use_code_list.html
+
+Please note that Rapid cannot provide guidance on selecting entity use codes for specific customers; however, Avalara's support team includes taxation experts who can assist with that.  
 
 ---
 

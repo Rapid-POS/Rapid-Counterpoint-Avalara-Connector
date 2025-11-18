@@ -120,7 +120,7 @@ If no Avalara Tax Code is assigned to an **item**:
 If no Avalara Tax Code is assigned to a **miscellaneous charge**:
 - No information for that MISC charge is transmitted to Avalara
 
-It is important to note that Avalara does not consider Counterpoint's taxable flag at all, but this value can be important during an outage that requires use of the Fallback Tax Code.  
+It is important to note that Avalara does not consider Counterpoint's taxable flag, but this value can be important during an outage that requires use of the Fallback Tax Code.  
   
 ### **Item Tax Code Example 1**
 
@@ -171,7 +171,8 @@ Entity Use Codes are assigned on:
 If no Avalara Entity Use Code is assigned to a **customer**:
 - The transaction is submitted without exemption information, so Avalara does not apply customer-based exemptions
 - This is quite common as typically most customers are not tax exempt
-- It is important to note that Avalara does not consider Counterpoint's taxable flag at all, but this value can be important during an outage that requires use of the Fallback Tax Code.  
+
+It is important to note that Avalara does not consider Counterpoint's taxable flag, but this value can be important during an outage that requires use of the Fallback Tax Code.  
 
 ### **Customer Entity Use Code Example 1**
 
@@ -217,20 +218,20 @@ Accurate sales tax calculation requires that both the Avalara Tax Authority and 
 **Configuration Steps**
 1. Confirm That the Avalara Tax Authority and Avalara Tax Code Are Properly Defined in Counterpoint  
 2. Configure Custom Store Settings for the Avalara Connector  
-  - Fallback Tax Code Setup  
-  - Define the Value for “Use Avalara For”  
-  - Define the Avalara Tax Code for Each Miscellaneous Charge  
+  a. Fallback Tax Code Setup  
+  b. Define the Value for “Use Avalara For”  
+  c. Define the Avalara Tax Code for Each Miscellaneous Charge  
 3. Enable Avalara Tax Calculation for a Store  
 4. Repeat for additional stores as needed  
 
 ### Confirm That the Avalara Tax Authority and Avalara Tax Code Are Properly Defined in Counterpoint
 
-- Tax Authority Setup for Avalara
+- Tax Authority Setup for `AVALARA`
   - To review the configuration for the Avalara Tax Authority, navigate to: **Setup > System > Tax Authorities**
 
 [IMAGE PLACEHOLDER]
 
-- Tax Code Setup for Avalara
+- Tax Code Setup for `AVALARA`
   - To review the configuration for the Avalara Tax Code, navigate to: **Setup > System > Tax Codes**
 
 [IMAGE PLACEHOLDER]
@@ -239,7 +240,7 @@ The Avalara Tax Code will later be assigned to each store that should rely on Av
 
 ### Configure Custom Store Settings for the Avalara Connector
 
-It is recommended to first configure the store’s **Custom** tab. These settings can be entered at any time. The final configuration on the **Main** tab determines when the Avalara Connector becomes active.
+It is recommended to first configure the store’s **Custom** tab. These settings can be entered at any time. (The final configuration on the **Main** tab determines when the Avalara Connector becomes active.)
 
 Navigate to: **Setup > Point of Sale > Stores > Custom Tab**
 
@@ -256,8 +257,8 @@ Select a Fallback Tax Code to be used when a connection to Avalara cannot be est
 If no tax codes have been defined yet,
 - Navigate to: **Setup > System > Tax Codes**
 - Create the required tax code
-- Return to:**Setup > Point of Sale > Stores > Custom Tab**
-- and assign it to the Fallback Tax Code field
+- Return to: **Setup > Point of Sale > Stores > Custom Tab**
+- and Assign it to the Fallback Tax Code field
 
 #### 2. Define the Value for “Use Avalara For”
 
@@ -281,8 +282,7 @@ Valid options include:
     - Avalara calculates and applies the tax and reports the transaction.
 
 - **Ship-To Transactions**  
-  - Not currently a valid option.  
-  - Planned for future development.  
+  - Not currently a valid option. Planned for future development.  
   - Once implemented, the connector will retrieve tax from Avalara only when the document contains a ship-to address.
 
 #### 3. Define the Avalara Tax Code for Each Miscellaneous Charge
@@ -292,6 +292,11 @@ Valid options include:
 
 ### Enable Avalara Tax Calculation for a Store
 
+**Important:**  
+The `AVALARA` Tax Code must not be entered until the store is ready for Avalara to begin calculating tax.
+
+Until `AVALARA` is assigned as the Store Tax Code, Counterpoint will continue to calculate tax using its internal tax rules, which may not reflect the most current jurisdictional rates or tax structures.  
+  
 Navigate to: **Setup > Point of Sale > Stores > Main Tab**
 
 Within the **Main** tab:
@@ -300,12 +305,7 @@ Within the **Main** tab:
 
 These settings ensure that all transactions from the store are sent to Avalara for real-time tax determination.
 
-**Important:**  
-The `AVALARA` Tax Code must not be entered until the store is ready for Avalara to begin calculating tax.
-
-Until `AVALARA` is assigned as the Store Tax Code, Counterpoint will continue to calculate tax using its internal tax rules, which may not reflect the most current jurisdictional rates or tax structures.
-
-### Enable Avalara Tax Calculation for Additional Stores
+### Enable Avalara Tax Calculation for *Additional* Stores
 
 Repeat the steps above for each Counterpoint store that will use the Avalara Connector for tax calculation.
 
@@ -315,7 +315,9 @@ Repeat the steps above for each Counterpoint store that will use the Avalara Con
 
 The connector may request tax calculations from Avalara for tickets, orders, or layaways. However, only the **final sale transaction** (the completed ticket) is recorded in the Avalara account.
 
-Deposit tickets are not considered sales. A deposit represents a down payment for a portion of the order total, up to 100 percent. Because a deposit is not a completed sale, deposit tickets are not recorded in Avalara. Only the final completed sale ticket is submitted.
+Deposit tickets are not considered sales. 
+- A deposit represents a down payment for a portion of the order total, up to 100 percent.
+- Because a deposit is not a completed sale, deposit tickets are not recorded in Avalara. Only the final completed sale ticket is submitted.
 
 ---
 

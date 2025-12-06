@@ -52,12 +52,12 @@ When a ticket or order is created in Counterpoint, the connector prepares the tr
 Avalara evaluates the submitted data using its internal tax rules, jurisdiction mappings, product classifications, and exemption logic. Avalara then returns the calculated tax amount.
 
 ### 3. Document Updates  
-If the Counterpoint document changes (items added, removed, or modified), the connector resubmits the updated data to Avalara. Avalara recalculates the tax and returns an updated tax amount.
+If the Counterpoint document changes (items added, removed, or modified), the connector resubmits the updated data to Avalara. Avalara recalculates the tax and returns an updated tax amount. Document updates create additional API calls.
 
 ### 4. Transaction Commit (Completed Ticket)  
-When a ticket is completed in Counterpoint, the final tax data is reported back to Avalara. Avalara stores the final transaction in its reporting system.  
+When a ticket is completed in Counterpoint, the final tax data is reported back to Avalara with a final API call. Avalara stores the final transaction in its reporting system.  
 
-Avalara’s billing model often factors in the number of API calls, so it’s important to understand how Counterpoint activity affects call volume. Within Counterpoint, the **hold-and-recall** process triggers a tax calculation request to Avalara. For a typical ticket, this occurs when the end-user first clicks **Pay**, prompting Avalara to calculate tax based on the current data. If the ticket is later modified, the connector must send the updated information to Avalara to recalculate tax, generating an additional API call. A final call is made when the ticket is completed, committing the transaction to Avalara’s reporting system.
+Avalara’s billing model often factors in the number of API calls, so it’s important to understand how Counterpoint activity affects call volume. Within Counterpoint, the **hold-and-recall** process triggers a tax calculation request to Avalara. For a typical ticket, this occurs when the end-user first clicks **Pay**, prompting Avalara to calculate tax based on the current data. If the ticket is later modified, the connector must send the updated information to Avalara to recalculate tax, generating an additional API call (or multiple calls depending on t. A final call is made when the ticket is completed, committing the transaction to Avalara’s reporting system.
 
 ---
 
@@ -93,13 +93,19 @@ Avalara relies on precise geographical information to determine which state, cou
 - Street Address  
 - City  
 - State  
-- ZIP Code  
+- ZIP Code
+
+![Example of Counterpoint Touchscreen Ship-To Address](./images/counterpoint-touchscreen-ship-to-address.png)  
 
 ### Why the Address Matters  
-ZIP Code alone is not sufficient for accurate tax calculation. Many ZIP Codes span multiple tax jurisdictions. Avalara uses geolocation to map the full address to the correct jurisdiction.
+ZIP Code alone is not sufficient for accurate tax calculation. Many ZIP Codes span multiple tax jurisdictions. For example, Greenwood Village, CO has one ZIP code but four different tax jurisdictions. Avalara uses geolocation to map the full address to the correct jurisdiction.
+
+![Example of Zip Code with Four Tax Jurisdictions in Greenwood Village Colorado](./images/zip-code-with-four-tax-jurisdictions-greenwood-village-colorado.png)  
 
 ### Address Fallback  
 If no ship-to address is provided, the **store address** is used as the destination. Therefore; when no-ship to address is present, taxes are calculated based on the store’s physical location.  
+
+![Example of Store Address](./images/counterpoint-stores-contacts-tab.png)  
 
 ---
 
@@ -109,7 +115,11 @@ Avalara does not rely on simple taxable or exempt flags for items. Instead, Aval
 
 ### Assigning Tax Codes in Counterpoint  
 - **Items:** Assigned on the item record’s Custom tab  
-- **Miscellaneous Charges:** Assigned on the Store record’s Custom tab  
+- **Miscellaneous Charges:** Assigned on the Store record’s Custom tab
+
+![Example of Item Avalara Tax Code](./images/counterpoint-item-avalara-tax-code.png)  
+
+![Example of Miscellaneous Charge Tax Code](./images/counterpoint-stores-misc-charge-avalara-tax-code.png)  
 
 ### Behavior When No Tax Code Is Assigned 
 
@@ -166,6 +176,8 @@ Avalara does not rely on simple taxable or exempt flags for customers. Instead, 
 Entity Use Codes are assigned on:
 
 - The **Customer record’s Custom tab**
+
+![Example of Customer Avalara Entity Use Code](./images/counterpoint-customer-avalara-entity-use-code.png)  
 
 ### Behavior When No Entity Use Code Is Assigned  
 If no Avalara Entity Use Code is assigned to a **customer**:
@@ -229,12 +241,16 @@ Accurate sales tax calculation requires that both the Avalara Tax Authority and 
 - Tax Authority Setup for `AVALARA`
   - To review the configuration for the Avalara Tax Authority, navigate to: **Setup > System > Tax Authorities**
 
-[IMAGE PLACEHOLDER]
+![Example of Avalara Tax Authority Rule - Main Tab](./images/counterpoint-tax-authorities-avalara-rule-main-tab.png)  
+
+![Example of Avalara Tax Authority Rule - Applies To Tab](./images/counterpoint-tax-authorities-avalara-rule-applies-to-tab.png)  
+
+![Example of Avalara Tax Authority Rule - Tax Tab](./images/counterpoint-tax-authorities-avalara-rule-tax-tab.png)  
 
 - Tax Code Setup for `AVALARA`
   - To review the configuration for the Avalara Tax Code, navigate to: **Setup > System > Tax Codes**
 
-[IMAGE PLACEHOLDER]
+![Example of Avalara Tax Code](./images/counterpoint-tax-codes-avalara.png) 
 
 The Avalara Tax Code will later be assigned to each store that should rely on Avalara for tax calculation. A **Fallback Tax Code** must also be configured to support scenarios in which the Avalara Connector is unable to communicate with Avalara, such as during a temporary outage.
 
@@ -259,6 +275,8 @@ If no tax codes have been defined yet,
 - Create the required tax code
 - Return to: **Setup > Point of Sale > Stores > Custom Tab**
 - and Assign it to the Fallback Tax Code field
+
+![Example of Stores Avalara Fallback Tax Code](./images/counterpoint-stores-fallback-tax-code.png) 
 
 #### 2. Define the Value for “Use Avalara For”
 
@@ -285,10 +303,14 @@ Valid options include:
   - Not currently a valid option. Planned for future development.  
   - Once implemented, the connector will retrieve tax from Avalara only when the document contains a ship-to address.
 
+![Example of Use Avalara For Options](./images/counterpoint-stores-use-avalara-for.png) 
+
 #### 3. Define the Avalara Tax Code for Each Miscellaneous Charge
 
 - Assign an Avalara Tax Code to each miscellaneous charge used by the store.  
 - This ensures that each charge is sent to Avalara as a document line and included in the tax calculation.
+
+![Example of Miscellaneous Charge Tax Code](./images/counterpoint-stores-misc-charge-avalara-tax-code.png)  
 
 ### Enable Avalara Tax Calculation for a Store
 
@@ -304,6 +326,8 @@ Within the **Main** tab:
 - Set **Store tax code** to **`AVALARA`**
 
 These settings ensure that all transactions from the store are sent to Avalara for real-time tax determination.
+
+![Example of Stores Main Tab Avalara Settings](./images/counterpoint-stores-store-tax-code.png) 
 
 ### Enable Avalara Tax Calculation for *Additional* Stores
 

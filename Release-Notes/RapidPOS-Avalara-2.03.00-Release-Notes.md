@@ -1,4 +1,4 @@
-# Rapid POS Avalara Connector v2.3.00 Release Notes  
+# Rapid POS Avalara Connector v2.03.00 Release Notes  
 **Release Date:** May 5th, 2026  
 
 ---

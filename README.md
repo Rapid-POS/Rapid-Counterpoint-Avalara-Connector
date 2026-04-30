@@ -59,6 +59,10 @@ If the Counterpoint document changes (items added, removed, or modified), the co
 ### 4. Transaction Commit (Completed Ticket)  
 When a ticket is completed in Counterpoint, the final tax data is reported back to Avalara with a final API call. Avalara stores the final transaction in its reporting system.  
 
+### 5. Voided Counterpoint Transactions
+As of V2.03.00 the connector will now automatically void the corresponding Avalara transaction when a ticket is voided in Counterpoint.  
+This ensures that Avalara remains in sync with Counterpoint and that previously reported tax is properly reversed without requiring manual intervention.  
+
 Avalara’s billing model often factors in the number of API calls, so it’s important to understand how Counterpoint activity affects call volume. Within Counterpoint, the **hold-and-recall** process triggers a tax calculation request to Avalara. For a typical ticket, this occurs when the end-user first clicks **Pay**, prompting Avalara to calculate tax based on the current data. If the ticket is later modified, the connector must send the updated information to Avalara to recalculate tax, generating an additional API call (or multiple calls depending on t. A final call is made when the ticket is completed, committing the transaction to Avalara’s reporting system.
 
 ---
@@ -85,6 +89,7 @@ This process updates the lists of codes published by Avalara, ensuring that the 
 **Important:**  
 - The nightly update refreshes only the **lists of available codes**.  
 - It does **not** modify, remove, or replace any existing Item Tax Code or Customer Entity Use Code assignments already stored in Counterpoint. All previously assigned codes remain unchanged unless manually updated by the user.
+- As of V2.03.00 Customer and Item Avalara Tax Code fields only display active tax codes.
 
 ---
 
@@ -109,6 +114,7 @@ If no ship-to address is provided, the **store address** is used as the destinat
 
 ![Example of Store Address](./images/counterpoint-stores-contacts-tab.png)  
 
+### 
 ---
 
 ## SECTION 4: Avalara Tax Codes (Line Item and Miscellaneous Charge Classification)
@@ -301,18 +307,20 @@ Valid options include:
     - The transaction is transmitted to Avalara.  
     - Avalara calculates and applies the tax and reports the transaction.
 
-- **Ship-To Transactions**  
-  - Not currently a valid option. Planned for future development.  
-  - Once implemented, the connector will retrieve tax from Avalara only when the document contains a ship-to address.
+- **Ship-To Transactions** 
+    - When enabled, the connector will only report transactions to Avalara that include a Ship-To address.
+    - **Provides control over which transactions are reported and supports scenarios where only shipped transactions should be processed through Avalara.
 
-![Example of Use Avalara For Options](./images/counterpoint-stores-use-avalara-for.png) 
+<img width="1295" height="442" alt="image" src="https://github.com/user-attachments/assets/93fcbe4f-7a7f-4998-99dd-80dd94ec62e4" />
+
+!
+
 
 #### 3. Define the Avalara Tax Code for Each Miscellaneous Charge
 
 - Assign an Avalara Tax Code to each miscellaneous charge used by the store.  
 - This ensures that each charge is sent to Avalara as a document line and included in the tax calculation.
-
-![Example of Miscellaneous Charge Tax Code](./images/counterpoint-stores-misc-charge-avalara-tax-code.png)  
+[Example of Miscellaneous Charge Tax Code](./images/counterpoint-stores-misc-charge-avalara-tax-code.png)  
 
 ### Enable Avalara Tax Calculation for a Store
 

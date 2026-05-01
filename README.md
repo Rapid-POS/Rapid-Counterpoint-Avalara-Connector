@@ -165,6 +165,22 @@ It is important to note that Avalara does not consider Counterpoint's taxable fl
 **Outcome in Missouri:**  
 - The item is **taxable**, typically at a **reduced rate** compared to general merchandise.
 
+### View for Items with Inactive Avalara Tax Codes  
+As of V2.03.00 there is now a view to display items that are currently assigned inactive Avalara Tax Codes.  
+This allows users to quickly identify items with invalid tax code mappings and update them accordingly to ensure accurate tax calculation and reporting.  
+
+
+To access the Inactive Avalara Items View go to:
+Counterpoint Main Menu > Connectors > Avalara > Items with Inactive Avalara Tax Codes
+
+Use the Record Navigation Buttons to scroll through the list or you can see the data in Table View by going to Edit>Table View
+<img width="126" height="126" alt="image" src="https://github.com/user-attachments/assets/99c3f814-6d8d-4a4a-8165-ffcae24f898b" />
+
+
+<img width="532" height="442" alt="image" src="https://github.com/user-attachments/assets/d198c0ee-9c46-4f49-80f4-0906308553fd" />
+
+
+
 ### Help Selecting Avalara Tax Codes  
 
 Selecting the correct Avalara Tax Code is essential because it works alongside the destination address and the customer's Entity Use Code to determine the final tax result. These three inputs form the foundation of Avalara’s calculation logic, and accurate tax codes result in a reliable and compliant tax calculation.  

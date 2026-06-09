@@ -15,7 +15,9 @@ Rapid’s Counterpoint-to-Avalara connector delivers real-time sales tax calcula
 - Minimum Counterpoint version: **8.5.6.2**  
 - Minimum SQL Server version: **2016**  
 - Minimum Windows Server version: **2016**  
-- Minimum PowerShell version: **5.1**  
+- Minimum PowerShell version: **5.1**
+  
+For detailed CI/CD release requirements, see the [CI/CD Connector Requirements](https://github.com/Rapid-POS/Miscellaneous-Documents/blob/main/CICD-Connector-Requirements.md).
 
 If you would like the Avalara connector but your system does not meet these minimum requirements, please consult your Care Team Lead (vCIO) for an upgrade quote.
 

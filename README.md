@@ -1,4 +1,4 @@
-# Rapid POS Avalara Connector - v2.02.00
+# Rapid POS Avalara Connector - v2.03.09
 Updated 2/17/2026
 
 ---
